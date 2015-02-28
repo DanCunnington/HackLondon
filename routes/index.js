@@ -6,7 +6,7 @@ var client = require('twilio')('AC93f083af157194e9e51473461236bbe8','a177df398f8
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Hi Ruth' });
 });
 
 
