@@ -1,4 +1,5 @@
 0 info it worked if it ends with ok
+
 1 verbose cli [ 'C:\\Program Files\\nodejs\\\\node.exe',
 1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
 1 verbose cli   'start' ]
@@ -36,3 +37,4 @@
 19 error     npm owner ls hacklondon
 19 error There is likely additional logging output above.
 20 verbose exit [ 1, true ]
+
