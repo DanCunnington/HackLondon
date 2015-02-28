@@ -6,7 +6,16 @@ var client = require('twilio')('AC93f083af157194e9e51473461236bbe8','a177df398f8
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Hi Ruth' });
+
+	var out_message = "Hey please send us some data";
+	www.googleapis.com/language/translate/v2?key=AIzaSyBxO4Dar2Q_4zTurAGYfWOgeu4Ngewb4SE&q="+out_message+"&source=en&target=es;
+
+	$.get("www.googleapis.com/language/translate/v2?key=AIzaSyBxO4Dar2Q_4zTurAGYfWOgeu4Ngewb4SE&q="+out_message+"&source=en&target=es;", function(data, status){
+        alert("Data: " + data + "\nStatus: " + status);
+    });
+
+  res.render('index', { title: 'Hi Ellie' });
+
 });
 
 
