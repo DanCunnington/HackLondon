@@ -1,24 +1,35 @@
 0 info it worked if it ends with ok
-1 verbose cli [ 'C:\\Program Files (x86)\\nodejs\\\\node.exe',
-1 verbose cli   'C:\\Program Files (x86)\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
-1 verbose cli   'install' ]
-2 info using npm@1.4.28
-3 info using node@v0.10.35
-4 verbose node symlink C:\Program Files (x86)\nodejs\\node.exe
-5 error install Couldn't read dependencies
-6 error Failed to parse json
-6 error Unexpected token
-7 error File: C:\Users\Dan\Documents\HackLondon Hackathon\hacklondon\package.json
-8 error Failed to parse package.json data.
-8 error package.json must be actual JSON, not just JavaScript.
-8 error
-8 error This is not a bug in npm.
-8 error Tell the package author to fix their package.json file. JSON.parse
-9 error System Windows_NT 6.1.7601
-10 error command "C:\\Program Files (x86)\\nodejs\\\\node.exe" "C:\\Program Files (x86)\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install"
-11 error cwd C:\Users\Dan\Documents\HackLondon Hackathon\hacklondon
-12 error node -v v0.10.35
-13 error npm -v 1.4.28
-14 error file C:\Users\Dan\Documents\HackLondon Hackathon\hacklondon\package.json
-15 error code EJSONPARSE
-16 verbose exit [ 1, true ]
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'start' ]
+2 info using npm@2.5.1
+3 info using node@v0.12.0
+4 verbose run-script [ 'prestart', 'start', 'poststart' ]
+5 info prestart hacklondon@0.0.0
+6 info start hacklondon@0.0.0
+7 verbose unsafe-perm in lifecycle true
+8 info hacklondon@0.0.0 Failed to exec start script
+9 verbose stack Error: hacklondon@0.0.0 start: `node ./bin/www`
+9 verbose stack Exit status 1
+9 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:213:16)
+9 verbose stack     at EventEmitter.emit (events.js:110:17)
+9 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/spawn.js:14:12)
+9 verbose stack     at ChildProcess.emit (events.js:110:17)
+9 verbose stack     at maybeClose (child_process.js:1008:16)
+9 verbose stack     at Process.ChildProcess._handle.onexit (child_process.js:1080:5)
+10 verbose pkgid hacklondon@0.0.0
+11 verbose cwd /Users/ruthayers/Documents/hackathon/HackLondon
+12 error Darwin 14.1.0
+13 error argv "node" "/usr/local/bin/npm" "start"
+14 error node v0.12.0
+15 error npm  v2.5.1
+16 error code ELIFECYCLE
+17 error hacklondon@0.0.0 start: `node ./bin/www`
+17 error Exit status 1
+18 error Failed at the hacklondon@0.0.0 start script 'node ./bin/www'.
+18 error This is most likely a problem with the hacklondon package,
+18 error not with npm itself.
+18 error Tell the author that this fails on your system:
+18 error     node ./bin/www
+18 error You can get their info via:
+18 error     npm owner ls hacklondon
+18 error There is likely additional logging output above.
+19 verbose exit [ 1, true ]
