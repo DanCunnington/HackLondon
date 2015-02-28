@@ -1,7 +1,5 @@
-var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
-
 var lineChartData = {
-		labels : ["January","February","March","April","May","June","July"],
+		labels : ["January","February","March","April","May"],
 		datasets : [
 			{
 				label: "My First dataset",
@@ -11,24 +9,29 @@ var lineChartData = {
 				pointStrokeColor : "#fff",
 				pointHighlightFill : "#fff",
 				pointHighlightStroke : "rgba(220,220,220,1)",
-				data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
-			},
-			{
-				label: "My Second dataset",
-				fillColor : "rgba(151,187,205,0.2)",
-				strokeColor : "rgba(151,187,205,1)",
-				pointColor : "rgba(151,187,205,1)",
-				pointStrokeColor : "#fff",
-				pointHighlightFill : "#fff",
-				pointHighlightStroke : "rgba(151,187,205,1)",
-				data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+				data : [1,2,3,4,5]
 			}
 		]
-	}
+}
 
-	window.onload = function(){
+window.onload = function(){
+
+	$.get('/bloombergData', function(data) {
+		console.log(data);
+
+		console.log(data.data[0]);
+		bDataLength = data.data.length;
+
+		for (i = 0; i < bDataLength; i++) { 
+    		lineChartData.labels[i]= i;
+    		lineChartData.datasets[0].data[i] = i+1;
+		};
+
 		var ctx = document.getElementById("canvas").getContext("2d");
 		window.myLine = new Chart(ctx).Line(lineChartData, {
 			responsive: true
+		});
+	
+	
 	});
 }

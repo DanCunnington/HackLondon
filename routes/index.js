@@ -1,14 +1,12 @@
 var express = require('express');
 var router = express.Router();
-var http = require('https');
+var http = require('http');
+var https = require('https');
 
-//Faye - for sending text message replies to the client
-var faye = require('faye');
-var faye_server = new faye.NodeAdapter({mount: '/faye', timeout: 120});
+var fs = require('fs');
 
-console.log('Firing up faye server. . . ');
-faye_server.listen(8089);
-
+var host = process.argv[2] || "http-api.openbloomberg.com";
+var port = 443
 
 //Twilio connect - using test credentials for now
 var client = require('twilio')('AC93f083af157194e9e51473461236bbe8','a177df398f82f481ec819a1c828f57cb');
@@ -36,6 +34,7 @@ router.get('/', function(req, res, next) {
 	    var body = Buffer.concat(bodyChunks);
 	    console.log('BODY: ' + body);
 	    // ...and/or process the entire body here.
+	    
 	  })
 	});
 
@@ -44,17 +43,60 @@ router.get('/', function(req, res, next) {
 	});
 
 
-	  res.render('index', { title: 'Hi Ellie' });
-
 });
 
 /* ------------------------------------------------------------------------- */
 
 
 /* GET BLOOMBERG PAGE. */
-router.get('/bloomberg', function(req, res, next) {
+router.get('/bloomberg', function(req, response, next) {
+	response.render('bloomberg', { title: 'bloomberg page'});
+});
 
-  res.render('bloomberg', { title: 'bloomberg page' });
+router.get('/bloombergData', function(req, response, next) {
+	var options = {
+	    host: host,
+	    port: port,
+	    path: '/request?ns=blp&service=refdata&type=HistoricalDataRequest',
+	    method: 'POST',
+	    key: fs.readFileSync('public/bloomberg/hacklondon_spring_2015_006.key'),
+	    cert: fs.readFileSync('public/bloomberg/hacklondon_spring_2015_006.crt'),
+	    ca: fs.readFileSync('public/bloomberg/bloomberg.crt')
+	};
+
+	var req = https.request(options, function(res) {
+	    console.log("statusCode: ", res.statusCode);
+	    console.log("headers: ", res.headers);
+
+	    var bodyChunks = [];
+	    res.on('data', function(d) {
+	      //process.stdout.write(d);
+	      bodyChunks.push(d);
+	    });
+
+	    res.on('end', function(data) {
+	    	//res.render('bloomberg', { title: 'bloomberg page', bloombergData: data });
+	    	var body = Buffer.concat(bodyChunks);
+		    console.log('BODY: ' + body);
+		    response.json(body);
+		    
+	    });
+
+
+	});
+
+	req.on('error', function(e) {
+	    console.error(e);
+	});
+
+	req.write(JSON.stringify( {
+	    "securities": ["IBM US Equity"],
+	    "fields": ["PX_LAST"],
+	    "startDate": "20100101",
+	    "endDate": "20150101",
+	    "periodicitySelection": "YEARLY"
+	}));
+	req.end();
 
 });
 
@@ -97,11 +139,11 @@ router.post('/textMessageReply', function(req,res) {
 
 	//Send to client
 
-    faye_server.getClient().publish('/replyReceived', {
+    /*faye_server.getClient().publish('/replyReceived', {
         
         twilioResponse: replyObject
 
-	});
+	});*/
 
 
     res.render('index', { title: 'Message Sent' });
@@ -126,4 +168,3 @@ router.get('/bloomberg', function(req, res, next) {
 });
 
 module.exports = router;
-
