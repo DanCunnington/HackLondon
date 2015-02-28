@@ -1,5 +1,8 @@
 var express = require('express');
 var router = express.Router();
+var http = require('https');
+
+
 
 //Twilio connect - using test credentials for now
 var client = require('twilio')('AC93f083af157194e9e51473461236bbe8','a177df398f82f481ec819a1c828f57cb');
@@ -7,14 +10,35 @@ var client = require('twilio')('AC93f083af157194e9e51473461236bbe8','a177df398f8
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
-	var out_message = "Hey please send us some data";
-	/*www.googleapis.com/language/translate/v2?key=AIzaSyBxO4Dar2Q_4zTurAGYfWOgeu4Ngewb4SE&q="+out_message+"&source=en&target=es;
+	var outMessage = "Hello+ellie";
 
-	$.get("www.googleapis.com/language/translate/v2?key=AIzaSyBxO4Dar2Q_4zTurAGYfWOgeu4Ngewb4SE&q="+out_message+"&source=en&target=es;", function(data, status){
-        alert("Data: " + data + "\nStatus: " + status);
-    });*/
+	var options = {
+	  host: 'www.googleapis.com',
+	  path: '/language/translate/v2?key=AIzaSyBxO4Dar2Q_4zTurAGYfWOgeu4Ngewb4SE&q='+outMessage+'&source=en&target=es'
+	};
 
-  res.render('index', { title: 'Hi Ellie' });
+	var req = http.get(options, function(res) {
+	  console.log('STATUS: ' + res.statusCode);
+	  console.log('HEADERS: ' + JSON.stringify(res.headers));
+
+	  // Buffer the body entirely for processing as a whole.
+	  var bodyChunks = [];
+	  res.on('data', function(chunk) {
+	    // You can process streamed parts here...
+	    bodyChunks.push(chunk);
+	  }).on('end', function() {
+	    var body = Buffer.concat(bodyChunks);
+	    console.log('BODY: ' + body);
+	    // ...and/or process the entire body here.
+	  })
+	});
+
+	req.on('error', function(e) {
+	  console.log('ERROR: ' + e.message);
+	});
+
+
+	  res.render('index', { title: 'Hi Ellie' });
 
 });
 
@@ -47,6 +71,7 @@ router.get('/sendTextMessage', function(req, res, next) {
 
 });
 
+
 // POST route for the text message reply
 router.post('/textMessageReply', function(req,res) {
 	var replyObject = req.body;
@@ -65,4 +90,15 @@ router.post('/textMessageReply', function(req,res) {
     res.end(resp.toString());
 });
 
+/* GET notificatons page. */
+router.get('/notifications', function(req, res, next) {
+  res.render('notifications', { title: 'Hi Ruth' });
+});
+
+/* GET bloomberg page. */
+router.get('/bloomberg', function(req, res, next) {
+  res.render('bloomberg', { title: 'Hi Ruth' });
+});
+
 module.exports = router;
+
