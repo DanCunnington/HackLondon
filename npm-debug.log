@@ -27,3 +27,4 @@
 16 error npm -v 1.4.28
 17 error code ELIFECYCLE
 18 verbose exit [ 1, true ]
+
