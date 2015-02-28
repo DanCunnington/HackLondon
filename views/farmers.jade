@@ -1,0 +1,48 @@
+extends layout
+
+block content
+    script(src='/javascripts/farmers.js')
+    #wrapper
+        //Farmer INFO
+        #farmerInfo
+            h2 Farmer Info
+            p
+                strong Name:
+                |  <span id='farmerInfoName'></span>
+                br
+                strong Phone Number:
+                |  <span id='farmerInfoPhoneNumber'></span>
+         
+        // /Farmer INFO
+
+        // Farmer LIST
+        h2 Farmers
+        #farmerList
+            table
+                thead
+                    th Name
+                    th Phone Number
+                tbody
+        // /Farmer LIST
+        // ADD Farmer
+        h2 Add Farmer
+        #addFarmer
+            fieldset
+                input#inputFarmerName(type='text', placeholder='Name')
+                input#inputFarmerPhone(type='text', placeholder='Phone Number')
+                br
+                button#btnAddFarmer Add Farmer
+        // /ADD Farmer
+
+        // UPDATE Farmer
+        br
+        h2 Update Farmer
+        #updateFarmer
+            fieldset
+                input#updateFarmerName(type='text', placeholder='Name')
+                input#updateFarmerPhone(type='text', placeholder='Phone Number')
+                br
+                button#btnUpdateFarmer Update Farmer
+        // /UPDATE Farmer
+
+    // /WRAPPER
