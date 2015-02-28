@@ -10,7 +10,7 @@ $(document).ready(function() {
     $('#farmerList table tbody').on('click', 'td a.linkshowfarmer', showfarmerInfo);
 
     // Add farmer button click
-    $('#btnAddfarmer').on('click', addfarmer);
+    $('#btnAddFarmer').on('click', addfarmer);
 
     // Delete farmer link click
     $('#farmerList table tbody').on('click', 'td a.linkdeletefarmer', deletefarmer);
@@ -19,7 +19,7 @@ $(document).ready(function() {
     $('#farmerList table tbody').on('click', 'td a.linkupdatefarmer', updatefarmerRetrieve);
 
     // Update farmer update button
-     $('#btnUpdatefarmer').on('click', updatefarmerSubmit);
+     $('#btnUpdateFarmer').on('click', updatefarmerSubmit);
 
     // Populate the farmer table on initial page load
     populateTable();
@@ -43,8 +43,8 @@ function populateTable() {
         // For each item in our JSON, add a table row and cells to the content string
         $.each(data, function(){
             tableContent += '<tr>';
-            tableContent += '<td><a href="#" class="linkshowfarmer" rel="' + this.farmername + '">' + this.farmername + '</a></td>';
-            tableContent += '<td>' + this.email + '</td>';
+            tableContent += '<td><a href="#" class="linkshowfarmer" rel="' + this.name + '">' + this.name + '</a></td>';
+            tableContent += '<td>' + this.phoneNumber + '</td>';
             tableContent += '<td><a href="#" class="linkdeletefarmer" rel="' + this._id + '">delete</a></td>';
             tableContent += '<td><a href="#" class="linkupdatefarmer" rel="' + this._id + '">update</a></td>';
             tableContent += '</tr>';
@@ -65,16 +65,14 @@ function showfarmerInfo(event) {
     var thisfarmerName = $(this).attr('rel');
 
     // Get Index of object based on id value
-    var arrayPosition = farmerListData.map(function(arrayItem) { return arrayItem.farmername; }).indexOf(thisfarmerName);
+    var arrayPosition = farmerListData.map(function(arrayItem) { return arrayItem.name; }).indexOf(thisfarmerName);
     
     // Get our farmer Object
     var thisfarmerObject = farmerListData[arrayPosition];
 
     //Populate Info Box
-    $('#farmerInfoName').text(thisfarmerObject.fullname);
-    $('#farmerInfoAge').text(thisfarmerObject.age);
-    $('#farmerInfoGender').text(thisfarmerObject.gender);
-    $('#farmerInfoLocation').text(thisfarmerObject.location);
+    $('#farmerInfoName').text(thisfarmerObject.name);
+    $('#farmerInfoPhoneNumber').text(thisfarmerObject.phoneNumber);
 
 };
 
@@ -93,14 +91,10 @@ function addfarmer(event) {
 
         // If it is, compile all farmer info into one object
         var newfarmer = {
-            'farmername': $('#addfarmer fieldset input#inputfarmerName').val(),
-            'email': $('#addfarmer fieldset input#inputfarmerEmail').val(),
-            'fullname': $('#addfarmer fieldset input#inputfarmerFullname').val(),
-            'age': $('#addfarmer fieldset input#inputfarmerAge').val(),
-            'location': $('#addfarmer fieldset input#inputfarmerLocation').val(),
-            'gender': $('#addfarmer fieldset input#inputfarmerGender').val()
+            'name': $('#addFarmer fieldset input#inputFarmerName').val(),
+            'phoneNumber': $('#addFarmer fieldset input#inputFarmerPhone').val()
         }
-
+        
         // Use AJAX to post the object to our addfarmer service
         $.ajax({
             type: 'POST',
@@ -113,7 +107,7 @@ function addfarmer(event) {
             if (response.msg === '') {
 
                 // Clear the form inputs
-                $('#addfarmer fieldset input').val('');
+                $('#addFarmer fieldset input').val('');
 
                 // Update the table
                 populateTable();
@@ -190,12 +184,9 @@ function updatefarmerRetrieve(event) {
     var thisfarmerObject = farmerListData[arrayPosition];
 
     //Populate Info Box
-    $('#updatefarmerName').val(thisfarmerObject.farmername);
-    $('#updatefarmerFullname').val(thisfarmerObject.fullname);
-    $('#updatefarmerEmail').val(thisfarmerObject.email);
-    $('#updatefarmerAge').val(thisfarmerObject.age);
-    $('#updatefarmerGender').val(thisfarmerObject.gender);
-    $('#updatefarmerLocation').val(thisfarmerObject.location);
+    $('#updateFarmerName').val(thisfarmerObject.name);
+    $('#updateFarmerPhone').val(thisfarmerObject.phoneNumber);
+
 
 }
 
@@ -215,14 +206,12 @@ function updatefarmerSubmit(event) {
 
         // If it is, compile all farmer info into one object
         var updatedfarmer = {
-            'farmername': $('#updatefarmer fieldset input#updatefarmerName').val(),
-            'email': $('#updatefarmer fieldset input#updatefarmerEmail').val(),
-            'fullname': $('#updatefarmer fieldset input#updatefarmerFullname').val(),
-            'age': $('#updatefarmer fieldset input#updatefarmerAge').val(),
-            'location': $('#updatefarmer fieldset input#updatefarmerLocation').val(),
-            'gender': $('#updatefarmer fieldset input#updatefarmerGender').val()
+            'name': $('#updateFarmer fieldset input#updateFarmerName').val(),
+            'phoneNumber': $('#updateFarmer fieldset input#updateFarmerPhone').val()
+    
         }
 
+        
         // Use AJAX to post the object to our addfarmer service
         $.ajax({
             type: 'PUT',
@@ -235,7 +224,7 @@ function updatefarmerSubmit(event) {
             if (response.msg === '') {
 
                 // Clear the form inputs
-                $('#updatefarmer fieldset input').val('');
+                $('#updateFarmer fieldset input').val('');
 
                 // Update the table
                 populateTable();

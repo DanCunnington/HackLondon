@@ -2,6 +2,12 @@ var express = require('express');
 var router = express.Router();
 var http = require('https');
 
+//Faye - for sending text message replies to the client
+var faye = require('faye');
+var faye_server = new faye.NodeAdapter({mount: '/faye', timeout: 120});
+
+console.log('Firing up faye server. . . ');
+faye_server.listen(8089);
 
 
 //Twilio connect - using test credentials for now
@@ -74,9 +80,6 @@ router.get('/sendTextMessage', function(req, res, next) {
 
 	        console.log(responseData.from); // outputs "+14506667788"
 	        console.log(responseData.body); // outputs "word to your mother."
-
-
-	        res.render('index', { title: 'Message Sent' });
 	    }
 	});
 
@@ -91,6 +94,17 @@ router.post('/textMessageReply', function(req,res) {
 
 
 	//Save reply to database
+
+	//Send to client
+
+    faye_server.getClient().publish('/replyReceived', {
+        
+        twilioResponse: replyObject
+
+	});
+
+
+    res.render('index', { title: 'Message Sent' });
 
 	// Create a TwiML response
     var resp = new client.TwimlResponse();
