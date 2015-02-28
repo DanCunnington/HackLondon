@@ -71,4 +71,24 @@ router.get('/sendTextMessage', function(req, res, next) {
 
 });
 
+
+// POST route for the text message reply
+router.post('/textMessageReply', function(req,res) {
+	var replyObject = req.body;
+	console.log(replyObject.From);
+	console.log(replyObject.Body);
+
+
+	//Save reply to database
+
+	// Create a TwiML response
+    var resp = new client.TwimlResponse();
+	res.writeHead(200, {
+        'Content-Type':'text/xml'
+    });
+   
+    res.end(resp.toString());
+});
+
 module.exports = router;
+
