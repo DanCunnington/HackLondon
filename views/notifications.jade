@@ -2,41 +2,47 @@ extends layout
 
 block content
 
-  h1= title
-  p Welcome to #{title}
+  div( id='wrapper' )
+    div( id='sidebar-wrapper' )
+        ul.sidebar-nav
+            li.sidebar-brand
+              a( id='recent-notifications', href='#' ) Recent Notifications
+            li
+              a( id='farmer1', href='#' ) Farmer 1
+            li
+              a( id='farmer2', href='#' ) Farmer 2
+            li
+              a( id='farmer3', href='#' ) Farmer 3
+    div( id='page-content-wrapper' )
+        div.page-content
+            div.container
+                div.row
+                    div.col-md-12
+                      p Hello
 
-  p notifications
 
-  div.
-    <div class="col-md-6">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Username</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  //- div.container-fluid
+  //-   div.row-fluid
+  //-     div.sidebar-nav.sidebar-fixed-left
+  //-       ul.sidebar-nav
+  //-         //.nav.nav-list
+  //-         li
+  //-           a(href='#') Farmer 1
+  //-         li
+  //-           a(href='#') Farmer 2
+  //-         li
+  //-           a(href='#') Farmer 3
+                    
+
+
+  //- body
+  //-   div( id='sidebar-wrapper' )
+  //-     ul.sidebar-nav
+  //-       li: a(href="#") Dashboard
+  //-       li: a(href="#") Shortcuts
+
+  //div.col-xs-6( style='background-color:red' )
+    //p Farmer 1
+
+  //div.col-xs-6( style='background-color:blue' )
+    //p Farmer 1

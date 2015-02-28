@@ -8,11 +8,22 @@ var bodyParser = require('body-parser');
 var mongo = require('mongoskin');
 var db = mongo.db("mongodb://localhost:27017/hivedb", {native_parser:true});
 
+var http = require('http');
+var faye = require('faye');
+
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var farmers = require('./routes/farmers');
 
-var app = express();
+var app = express(),
+    server = http.createServer(app),
+    bayeux = new faye.NodeAdapter({mount : '/faye', timeout: 120});
+
+bayeux.attach(server);
+server.listen(8000);
+bayeux.on('handshake', function(clientId) {
+    console.log('Client connected', clientId);
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

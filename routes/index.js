@@ -8,6 +8,10 @@ var fs = require('fs');
 var host = process.argv[2] || "http-api.openbloomberg.com";
 var port = 443
 
+//Faye - for sending text message replies to the client
+var faye = require('faye');
+var fayeClient = new faye.Client('http://localhost:8000/faye');
+
 //Twilio connect - using test credentials for now
 var client = require('twilio')('AC93f083af157194e9e51473461236bbe8','a177df398f82f481ec819a1c828f57cb');
 
@@ -102,59 +106,23 @@ router.get('/bloombergData', function(req, response, next) {
 
 /* ---------------------------------------------------------------------------------*/
 
-//GET Request that sends the text message via twilio
-router.get('/sendTextMessage', function(req, res, next) {
-	
-	//Send an SMS text message
-	client.sendMessage({
-
-	    to:'+447961708658', // Any number Twilio can deliver to
-	    from: '+441384901173', // A number you bought from Twilio and can use for outbound communication
-	    body: 'Hey Farmer, please send us some data' // body of the SMS message
-
-	}, function(err, responseData) { //this function is executed when a response is received from Twilio
-
-	    if (!err) { // "err" is an error received during the request, if any
-
-	        // "responseData" is a JavaScript object containing data received from Twilio.
-	        // A sample response from sending an SMS message is here (click "JSON" to see how the data appears in JavaScript):
-	        // http://www.twilio.com/docs/api/rest/sending-sms#example-1
-
-	        console.log(responseData.from); // outputs "+14506667788"
-	        console.log(responseData.body); // outputs "word to your mother."
-	    }
-	});
-
-});
 
 
 // POST route for the text message reply
 router.post('/textMessageReply', function(req,res) {
 	var replyObject = req.body;
-	console.log(replyObject.From);
-	console.log(replyObject.Body);
 
+    //Save reply to database
+    var db = req.db;
+    db.collection('replies').insert(replyObject, function(error, result) {
+    	//Send to client
+    	fayeClient.publish('/replyReceived', {
 
-	//Save reply to database
+    		twilioResponse: replyObject
+    	});
 
-	//Send to client
-
-    /*faye_server.getClient().publish('/replyReceived', {
-        
-        twilioResponse: replyObject
-
-	});*/
-
-
-    res.render('index', { title: 'Message Sent' });
-
-	// Create a TwiML response
-    var resp = new client.TwimlResponse();
-	res.writeHead(200, {
-        'Content-Type':'text/xml'
-    });
-   
-    res.end(resp.toString());
+    	res.send(200);
+    })
 });
 
 /* GET notificatons page. */

@@ -21,6 +21,9 @@ $(document).ready(function() {
     // Update farmer update button
      $('#btnUpdateFarmer').on('click', updatefarmerSubmit);
 
+    // Message farmer link button
+    $('#farmerList table tbody').on('click', 'td a.linkmessagefarmer', messageFarmer);
+
     // Populate the farmer table on initial page load
     populateTable();
 
@@ -46,6 +49,7 @@ function populateTable() {
             tableContent += '<td><a href="#" class="linkshowfarmer" rel="' + this.name + '">' + this.name + '</a></td>';
             tableContent += '<td>' + this.phoneNumber + '</td>';
             tableContent += '<td><a href="#" class="linkdeletefarmer" rel="' + this._id + '">delete</a></td>';
+            tableContent += '<td><a href="#" class="linkmessagefarmer" rel="' + this._id + '">message</a></td>';
             tableContent += '<td><a href="#" class="linkupdatefarmer" rel="' + this._id + '">update</a></td>';
             tableContent += '</tr>';
         });
@@ -245,3 +249,62 @@ function updatefarmerSubmit(event) {
     }
 
 }
+
+//Pops up a js prompt and then sends a text to that particular farmers phone number
+function messageFarmer() {
+
+    event.preventDefault();
+
+    var farmerId = $(this).attr('rel');
+
+    //Search through farmerListData to find the farmer clicked
+    var farmer;
+    for (var i=0; i<farmerListData.length; i++) {
+        var temp = farmerListData[i];
+     
+        if (farmerId == temp._id) {
+            farmer = temp;
+        }
+    }
+
+    var message = prompt("Please enter a message to send to "+farmer.name);
+
+    //Build up JSON to post
+    var messageRequest = {"farmer_id": farmer._id, "farmer_name": farmer.name, "farmer_phoneNumber":farmer.phoneNumber, "message": message};
+
+    
+    // Use AJAX to post the object to our addfarmer service
+        $.ajax({
+            type: 'POST',
+            data: messageRequest,
+            url: '/farmers/messageFarmer',
+            dataType: 'JSON'
+        }).done(function( response ) {
+
+            // Check for successful (blank) response
+            if (response.msg === '') {
+
+                alert("Message Sent");
+
+            }
+            else {
+
+                // If something goes wrong, alert the error message that our service returned
+                alert('Error: ' + response.msg);
+
+            }
+        });
+
+
+}
+
+//Subscribe to faye event when text received
+//create faye client
+var faye_client = new Faye.Client('http://localhost:8000/faye');
+
+faye_client.subscribe('/replyReceived', function(message) {   
+    
+
+    console.log(message);
+    
+});

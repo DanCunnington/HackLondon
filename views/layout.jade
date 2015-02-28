@@ -9,15 +9,15 @@ html
     <!-- Latest compiled and minified CSS -->
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/notifications.css')
 
     <!-- Optional theme -->
     //link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css')
 
     script( src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' )
     script( src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js' )
-    script( src='/tab.js')
+    script( src='http://localhost:8000/faye/client.js' )
 
- 
   body(style="padding-bottom:10rem;")
     .container
     nav.navbar.navbar-inverse.navbar-fixed-top( role="navigation" )
@@ -31,7 +31,7 @@ html
      
         #navbar-inverse.collapse.navbar-collapse
             ul.nav.navbar-nav
-                li.active: a( href="#") Home
+                li: a( href="/") Home
                 li: a( href="/notifications" ) Notifications
                 li: a( href="/bloomberg" ) Bloomberg
                 li.dropdown
