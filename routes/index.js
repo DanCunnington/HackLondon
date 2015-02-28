@@ -44,6 +44,17 @@ router.get('/', function(req, res, next) {
 
 });
 
+/* ------------------------------------------------------------------------- */
+
+
+/* GET BLOOMBERG PAGE. */
+router.get('/bloomberg', function(req, res, next) {
+
+  res.render('bloomberg', { title: 'bloomberg page' });
+
+});
+
+/* ---------------------------------------------------------------------------------*/
 
 //GET Request that sends the text message via twilio
 router.get('/sendTextMessage', function(req, res, next) {
