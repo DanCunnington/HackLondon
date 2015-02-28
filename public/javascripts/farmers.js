@@ -245,3 +245,14 @@ function updatefarmerSubmit(event) {
     }
 
 }
+
+//Subscribe to faye event when text received
+//create faye client
+var faye_client = new Faye.Client('http://localhost:8000/faye');
+
+faye_client.subscribe('/replyReceived', function(message) {   
+    
+
+    console.log(message);
+    
+});

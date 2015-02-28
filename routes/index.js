@@ -4,11 +4,7 @@ var http = require('https');
 
 //Faye - for sending text message replies to the client
 var faye = require('faye');
-var faye_server = new faye.NodeAdapter({mount: '/faye', timeout: 120});
-
-console.log('Firing up faye server. . . ');
-faye_server.listen(8089);
-
+var fayeClient = new faye.Client('http://localhost:8000/faye');
 
 //Twilio connect - using test credentials for now
 var client = require('twilio')('AC93f083af157194e9e51473461236bbe8','a177df398f82f481ec819a1c828f57cb');
@@ -85,13 +81,13 @@ router.post('/textMessageReply', function(req,res) {
 	//Save reply to database
 
 	//Send to client
-
-    faye_server.getClient().publish('/replyReceived', {
+	fayeClient.publish('/replyReceived', {
         
         twilioResponse: replyObject
 
 	});
-
+    res.send(200);
+    /*
 
     res.render('index', { title: 'Message Sent' });
 
@@ -102,6 +98,7 @@ router.post('/textMessageReply', function(req,res) {
     });
    
     res.end(resp.toString());
+    */
 });
 
 /* GET notificatons page. */
