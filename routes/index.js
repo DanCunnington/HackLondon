@@ -2,7 +2,9 @@ var express = require('express');
 var router = express.Router();
 var http = require('https');
 
-
+//Faye - for sending text message replies to the client
+var faye = require('faye');
+var fayeClient = new faye.Client('http://localhost:8000/faye');
 
 //Twilio connect - using test credentials for now
 var client = require('twilio')('AC93f083af157194e9e51473461236bbe8','a177df398f82f481ec819a1c828f57cb');
@@ -42,6 +44,17 @@ router.get('/', function(req, res, next) {
 
 });
 
+/* ------------------------------------------------------------------------- */
+
+
+/* GET BLOOMBERG PAGE. */
+router.get('/bloomberg', function(req, res, next) {
+
+  res.render('bloomberg', { title: 'bloomberg page' });
+
+});
+
+/* ---------------------------------------------------------------------------------*/
 
 //GET Request that sends the text message via twilio
 router.get('/sendTextMessage', function(req, res, next) {
@@ -63,9 +76,6 @@ router.get('/sendTextMessage', function(req, res, next) {
 
 	        console.log(responseData.from); // outputs "+14506667788"
 	        console.log(responseData.body); // outputs "word to your mother."
-
-
-	        res.render('index', { title: 'Message Sent' });
 	    }
 	});
 
@@ -81,6 +91,17 @@ router.post('/textMessageReply', function(req,res) {
 
 	//Save reply to database
 
+	//Send to client
+	fayeClient.publish('/replyReceived', {
+        
+        twilioResponse: replyObject
+
+	});
+    res.send(200);
+    /*
+
+    res.render('index', { title: 'Message Sent' });
+
 	// Create a TwiML response
     var resp = new client.TwimlResponse();
 	res.writeHead(200, {
@@ -88,6 +109,7 @@ router.post('/textMessageReply', function(req,res) {
     });
    
     res.end(resp.toString());
+    */
 });
 
 /* GET notificatons page. */
