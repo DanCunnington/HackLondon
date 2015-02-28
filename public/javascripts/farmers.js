@@ -272,8 +272,7 @@ function messageFarmer() {
     //Build up JSON to post
     var messageRequest = {"farmer_id": farmer._id, "farmer_name": farmer.name, "farmer_phoneNumber":farmer.phoneNumber, "message": message};
 
-    alert(JSON.stringify(messageRequest));
-
+    
     // Use AJAX to post the object to our addfarmer service
         $.ajax({
             type: 'POST',

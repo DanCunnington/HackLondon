@@ -71,7 +71,7 @@ router.post('/messageFarmer', function(req,res) {
 	console.log(phoneNumber);
 	console.log(message);
 
-	var messageObjectToInsert = {"farmer_id": request.farmer_id, "message_body": message, "replied": false };
+	var messageObjectToInsert = {"farmer_id": request.farmer_id, "message_body": message};
 
 	//Save to database
 	var db = req.db;

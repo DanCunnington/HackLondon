@@ -61,19 +61,19 @@ router.get('/bloomberg', function(req, res, next) {
 // POST route for the text message reply
 router.post('/textMessageReply', function(req,res) {
 	var replyObject = req.body;
-	console.log(replyObject.From);
-	console.log(replyObject.Body);
-
 
 	//Save reply to database
-
-	//Send to client
-	fayeClient.publish('/replyReceived', {
+	var db = req.db;
+    db.collection('replies').insert(replyObject, function(error, result){
+    	//Send to client
+		fayeClient.publish('/replyReceived', {
         
-        twilioResponse: replyObject
+        	twilioResponse: replyObject
 
-	});
-    res.send(200);
+		});
+    	res.send(200);
+    });
+
 });
 
 /* GET notificatons page. */
