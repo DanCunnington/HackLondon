@@ -18,36 +18,7 @@ var client = require('twilio')('AC93f083af157194e9e51473461236bbe8','a177df398f8
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
-	var outMessage = "Hello+ellie";
-
-	var options = {
-	  host: 'www.googleapis.com',
-	  path: '/language/translate/v2?key=AIzaSyBxO4Dar2Q_4zTurAGYfWOgeu4Ngewb4SE&q='+outMessage+'&source=en&target=es'
-	};
-
-	var req = http.get(options, function(res) {
-	  console.log('STATUS: ' + res.statusCode);
-	  console.log('HEADERS: ' + JSON.stringify(res.headers));
-
-	  // Buffer the body entirely for processing as a whole.
-	  var bodyChunks = [];
-	  res.on('data', function(chunk) {
-	    // You can process streamed parts here...
-	    bodyChunks.push(chunk);
-	  });
-
-	  res.on('end', function() {
-	    var body = Buffer.concat(bodyChunks);
-	    console.log('BODY: ' + body);
-	    
-	    // ...and/or process the entire body here.
-	    
-	  })
-	});
-
-	req.on('error', function(e) {
-	  console.log('ERROR: ' + e.message);
-	});
+	
 
 	res.render('index', { title: 'Hi Ellie' });
 });
@@ -112,44 +83,125 @@ router.get('/bloombergData', function(req, response, next) {
 
 
 // POST route for the text message reply
-router.post('/textMessageReply', function(req,res) {
-	var db = req.db;
-	var replyObject = req.body;
+router.post('/textMessageReply', function(request,response) {
+	var db = request.db;
+	var replyObject = request.body;
 
-	console.log(replyObject);
-
-	//Get phone number and lookup in the farmers table which farmer has sent the reply
-	//then store the farmer id.
-	var replyPhoneNumber = replyObject.From;
-
-	db.collection('farmers').find({phoneNumber: replyPhoneNumber}).toArray(function (err, items) {
-       
-
-		//Should only be one item
-		var farmerId = items[0]._id;
+	var spanishReply = replyObject.Body;
 
 
-		//Update reply object
-		replyObject.farmer_id = farmerId;
+	//Convert spanish reply to english
+	var msgToTranslate = spanishReply.replace(/ /g, "+");
 
-		console.log(replyObject);
+	console.log("*****MSG: "+msgToTranslate);
 
-       	//Save reply to database
-	    db.collection('replies').insert(replyObject, function(error, result) {
-	    	//Send to client
-	    	fayeClient.publish('/replyReceived', {
+	var options = {
+		host: 'www.googleapis.com',
+		path: '/language/translate/v2?key=AIzaSyBxO4Dar2Q_4zTurAGYfWOgeu4Ngewb4SE&q='+msgToTranslate+'&source=es&target=en'
+	};
 
-	    		twilioResponse: replyObject
-	    	});
+	var req = https.get(options, function(res) {
+	  console.log('STATUS: ' + res.statusCode);
+	  console.log('HEADERS: ' + JSON.stringify(res.headers));
 
-	    	res.send(200);
-	    })
+	  // Buffer the body entirely for processing as a whole.
+	  var bodyChunks = [];
+	  res.on('data', function(chunk) {
+	    // You can process streamed parts here...
+	    bodyChunks.push(chunk);
+	  });
 
-    });
+	  res.on('end', function() {
+		    var body = Buffer.concat(bodyChunks);
+		    body = body +"";
+		    body = JSON.parse(body);
+		    var english = body.data.translations[0].translatedText;
+		    
+			console.log("ENGLISH translation:: "+english);
+		    
+		    //update the replyobject
+			replyObject.Body = english;
+			console.log(english);
+			console.log(replyObject);
+
+			//Get phone number and lookup in the farmers table which farmer has sent the reply
+			//then store the farmer id.
+			var replyPhoneNumber = replyObject.From;
+
+			db.collection('farmers').find({phoneNumber: replyPhoneNumber}).toArray(function (err, items) {
+		       
+
+				//Should only be one item
+				var farmerId = items[0]._id;
 
 
-    
+				//Update reply object
+				replyObject.farmer_id = farmerId;
+
+				
+		       	//Save reply to database
+			    db.collection('replies').insert(replyObject, function(error, result) {
+			    	//Send to client
+			    	fayeClient.publish('/replyReceived', {
+
+			    		twilioResponse: replyObject
+			    	});
+
+			    	response.send(200);
+			    })
+
+		    });
+		})
+	});
+
+	req.on('error', function(e) {
+	  console.log('ERROR: ' + e.message);
+	});
+
 });
+
+/* GET route for translating English to Spanish */
+router.get('/translateEngToSpa/:message', function(request,response) {
+
+	var msgToTranslate = request.params.message;
+
+	var msgToTranslate = msgToTranslate.replace(" ", "+");
+
+	var options = {
+		host: 'www.googleapis.com',
+		path: '/language/translate/v2?key=AIzaSyBxO4Dar2Q_4zTurAGYfWOgeu4Ngewb4SE&q='+msgToTranslate+'&source=en&target=es'
+	};
+
+	var req = https.get(options, function(res) {
+	  console.log('STATUS: ' + res.statusCode);
+	  console.log('HEADERS: ' + JSON.stringify(res.headers));
+
+	  // Buffer the body entirely for processing as a whole.
+	  var bodyChunks = [];
+	  res.on('data', function(chunk) {
+	    // You can process streamed parts here...
+	    bodyChunks.push(chunk);
+	  });
+
+	  res.on('end', function() {
+	    var body = Buffer.concat(bodyChunks);
+	    body = body +"";
+	    body = JSON.parse(body);
+	    var spanish = body.data.translations[0].translatedText;
+	    
+	
+	    
+	    response.json({"english": request.params.message,"spanish":spanish});
+	    
+		})
+	});
+
+	req.on('error', function(e) {
+	  console.log('ERROR: ' + e.message);
+	});
+
+});
+
 
 /* GET notificatons page. */
 router.get('/notifications', function(req, res, next) {

@@ -99,46 +99,59 @@ function sendMessage() {
 	//Clear input field
 	$("#newMessage").val("");
 
-	//Update display
-    appendQuestion(message);
+	//Translate to spanish
+	//get request, append messsage in parameters
+	$.get('/translateEngToSpa/'+message, function(json) {
 
-	//Get farmer id from rel of button
-	var farmerId = $("#sendMessage").attr('rel');
+		console.log(json);
+		var spanish = json.spanish;
 
-	//Search through farmerListData to find the farmer clicked
-    var farmer;
-    for (var i=0; i<farmerListData.length; i++) {
-        var temp = farmerListData[i];
-     
-        if (farmerId == temp._id) {
-            farmer = temp;
-        }
-    }
+		//Update display
+	    appendQuestion(message);
 
-	//Build up JSON to post
-    var messageRequest = {"farmer_id": farmer._id, "farmer_name": farmer.name, "farmer_phoneNumber":farmer.phoneNumber, "message": message};
+		//Get farmer id from rel of button
+		var farmerId = $("#sendMessage").attr('rel');
 
+		//Search through farmerListData to find the farmer clicked
+	    var farmer;
+	    for (var i=0; i<farmerListData.length; i++) {
+	        var temp = farmerListData[i];
+	     
+	        if (farmerId == temp._id) {
+	            farmer = temp;
+	        }
+	    }
+
+		//Build up JSON to post
+	    var messageRequest = {"farmer_id": farmer._id, "farmer_name": farmer.name, "farmer_phoneNumber":farmer.phoneNumber, "message": spanish};
+
+	    
+	    // Use AJAX to post the object to our addfarmer service
+	    $.ajax({
+	        type: 'POST',
+	        data: messageRequest,
+	        url: '/farmers/messageFarmer',
+	        dataType: 'JSON'
+	    }).done(function( response ) {
+
+	        // Check for successful (blank) response
+	        if (response.msg === '') {
+
+	            alert("Message Sent");
+
+	        }
+	        else {
+
+	            // If something goes wrong, alert the error message that our service returned
+	            alert('Error: ' + response.msg);
+
+	        }
+	    });
+
+	});
     
-    // Use AJAX to post the object to our addfarmer service
-    $.ajax({
-        type: 'POST',
-        data: messageRequest,
-        url: '/farmers/messageFarmer',
-        dataType: 'JSON'
-    }).done(function( response ) {
 
-        // Check for successful (blank) response
-        if (response.msg === '') {
 
-            alert("Message Sent");
-
-        }
-        else {
-
-            // If something goes wrong, alert the error message that our service returned
-            alert('Error: ' + response.msg);
-
-        }
-    });
+	
 
 }
