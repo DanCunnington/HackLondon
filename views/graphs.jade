@@ -1,19 +1,21 @@
 extends layout
 
 block content
+  script(src='/javascripts/notifications.js')
+  script(src='/javascripts/textreply.js')
+  script(src='/javascripts/graphfarmer.js')
+  script(src="/javascripts/chart.js")
 
   div( id='wrapper' )
     div( id="sidebar-wrapper")
       ul.sidebar-nav(id="listOfFarmers")
           li.sidebar-brand
             a( id='recent-notifications', href='#' ) Recent Notifications     
+
     div( id='page-content-wrapper' )
         div.container-fluid
             div.row
                 div.col-lg-12( id='conversationContainer' )
 
-                    p( id='headerP' ) Most recent message at the top
-                    p Add content here
+                  canvas#canvasFarmer(height='200',width='500', onclick='addFarmerPoint()')
 
-  script(src='/javascripts/notifications.js')
-  script(src='/javascripts/textreply.js')
