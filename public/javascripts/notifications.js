@@ -54,7 +54,8 @@ function showConversation() {
 
     //Update message send rel
     $("#sendMessage").attr('rel',thisfarmerId);
-
+    console.log($(this));
+    $("#conversationHead").html("Messaging - "+$(this).html());
 
     //Get messages from the server for the specified farmer
     $.get('/farmers/messagesToFarmer/'+thisfarmerId, function(messages) {
@@ -76,13 +77,17 @@ function showConversation() {
 
 //create reply function that appends a div to the conversation window given a message
 function appendReply(message) {
-  $("#conversationContainer").prepend("<row><div id='reply'>"+message+"</div></row>");
+  $("#messaging").append("<row><div id='reply'>"+message+"</div></row>");
+  var objDiv = document.getElementById("messaging");
+	objDiv.scrollTop = objDiv.scrollHeight;
   //$("#conversationContainer").insertBefore( "<row><div id='reply'> Reply from farmer </div></row>" , $("#conversationContainer").firstChild);
 };
 
 //create reply function that appends a div to the conversation window given a message
 function appendQuestion(message) {
-  $("#conversationContainer").prepend("<row><div id='question'>"+message+"</div></row>");
+  $("#messaging").append("<row><div id='question'>"+message+"</div></row>");
+  var objDiv = document.getElementById("messaging");
+	objDiv.scrollTop = objDiv.scrollHeight;
       //$('#conversationContainer').animate({ scrollBottom: $(document).height()-$(window).height() }, 500);
   //$("#conversationContainer").insertBefore( "<row><div id='reply'> Reply from farmer </div></row>" , $("#conversationContainer").firstChild);
 };
