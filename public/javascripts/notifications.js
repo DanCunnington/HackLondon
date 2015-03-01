@@ -1,56 +1,69 @@
 // farmerlist data array for filling in info box
-var farmerListData = [];
+var textData = [];
 
 var farmerIDToUpdate = "";
 
 // DOM Ready =============================================================
 $(document).ready(function() {
 
-    // farmername link click
-    $('#farmerList table tbody').on('click', 'td a.linkshowfarmer', showfarmerInfo);
-
     // Add farmer button click
-    $('#btnAddfarmer').on('click', addfarmer);
+    $('#listOfFarmers').on('click', 'li a.linkShowConversation', showConversation);
 
-    // Delete farmer link click
-    $('#farmerList table tbody').on('click', 'td a.linkdeletefarmer', deletefarmer);
 
-    // Update farmer link click
-    $('#farmerList table tbody').on('click', 'td a.linkupdatefarmer', updatefarmerRetrieve);
-
-    // Update farmer update button
-     $('#btnUpdatefarmer').on('click', updatefarmerSubmit);
-
-    // Populate the farmer table on initial page load
-    populateTable();
+    loadFarmers();
 
 });
 
 // Functions =============================================================
 
-// Fill table with data
-function populateTable() {
 
-    // Empty content string
-    var tableContent = '';
+function loadFarmers() {
+	$.get('/farmers/farmerlist', function(farmers) {
+		
+		for (var i=0; i<farmers.length; i++) {
+			$("#listOfFarmers").append("<li><a rel="+farmers[i]._id+" href='#' class='linkShowConversation'>"+farmers[i].name+"</a></li>");
+		}
+		
+	});
+}
 
-    // jQuery AJAX call for JSON
-    $.getJSON( '/farmers/farmerlist', function( data ) {
-        
-        // Stick our farmer data array into a farmerlist variable in the global object
-        farmerListData = data;
+//Displays a conversation for the farmer clicked
+function showConversation() {
 
-        // For each item in our JSON, add a table row and cells to the content string
-        $.each(data, function(){
-            tableContent += '<tr>';
-            tableContent += '<td><a href="#" class="linkshowfarmer" rel="' + this.farmername + '">' + this.farmername + '</a></td>';
-            tableContent += '<td>' + this.email + '</td>';
-            tableContent += '<td><a href="#" class="linkdeletefarmer" rel="' + this._id + '">delete</a></td>';
-            tableContent += '<td><a href="#" class="linkupdatefarmer" rel="' + this._id + '">update</a></td>';
-            tableContent += '</tr>';
-        });
+	// Prevent Link from Firing
+    event.preventDefault();
 
-        // Inject the whole content string into our existing HTML table
-        $('#farmerList table tbody').html(tableContent);
+    // Retrieve farmername from link rel attribute
+    var thisfarmerId = $(this).attr('rel');
+
+
+    //Get messages from the server for the specified farmer
+    $.get('/farmers/messagesToFarmer/'+thisfarmerId, function(messages) {
+
+    	for (var i=0; i<messages.length; i++) {
+    		appendQuestion(messages[i].message_body);
+    	}
     });
+
+    //Get replies from the server for the specified farmer
+    $.get('/farmers/repliesToFarmer/'+thisfarmerId, function(replies) {
+    	
+    	for (var i=0; i<replies.length; i++) {
+    		appendReply(replies[i].Body);
+    	}
+    });
+
+}
+
+//create reply function that appends a div to the conversation window given a message
+function appendReply(message) {
+  $("#conversationContainer").prepend("<row><div id='reply'>"+message+"</div></row>");
+  //$("#conversationContainer").insertBefore( "<row><div id='reply'> Reply from farmer </div></row>" , $("#conversationContainer").firstChild);
+};
+
+//create reply function that appends a div to the conversation window given a message
+function appendQuestion(message) {
+  $("#conversationContainer").prepend("<row><div id='question'>"+message+"</div></row>");
+      //$('#conversationContainer').animate({ scrollBottom: $(document).height()-$(window).height() }, 500);
+  //$("#conversationContainer").insertBefore( "<row><div id='reply'> Reply from farmer </div></row>" , $("#conversationContainer").firstChild);
 };

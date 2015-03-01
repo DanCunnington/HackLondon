@@ -99,13 +99,35 @@ router.post('/messageFarmer', function(req,res) {
 		    } else {
 		    	console.log(err);
 		    }
-		});
-        
+		});        
+    });
+});
+
+// GET messages to specified farmer
+router.get('/messagesToFarmer/:id', function(req,res) {
+
+	//Lookup in messages table and get messages where id = farmer_id
+	var farmerId = req.params.id;
+
+	var db = req.db;
+    db.collection('messages').find({farmer_id: farmerId}).toArray(function (err, items) {
+        res.json(items);
     });
 
+});
 
-	
+// GET replies to specified farmer
+router.get('/repliesToFarmer/:id', function(req,res) {
 
+	//Lookup in messages table and get messages where id = farmer_id
+	var ObjectID = require('mongodb').ObjectID;
+	farmerId = new ObjectID(req.params.id); 
+
+	var db = req.db;
+    db.collection('replies').find({farmer_id: farmerId}).toArray(function (err, items) {
+    	console.log(items);
+        res.json(items);
+    });
 
 });
 
