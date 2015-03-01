@@ -1,4 +1,4 @@
-#question {
+#reply {
 	float: left;
 	clear: both;
 	border-radius: 1em;
@@ -6,13 +6,13 @@
 	padding: 0.5em 1em;
 	margin-top: 0.5em;
 	margin-bottom: 0.5em;
-	margin-left: 0.2em;
+	margin-left: 0.5em;
 	background-color: #39b3d7;
 	border-color: #269abc;
 
 }
 
-#reply {
+#question {
   clear: both;
   float: right;
   border-radius: 1em;
@@ -20,7 +20,7 @@
   padding: 0.5em 1em;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
-  margin-right: 0.2em;
+  margin-right: 0.5em;
   background: #5cb85c;
   border-color: #4cae4c;
 }
@@ -28,7 +28,7 @@
 #newMessage {
 	border-radius: 0.75em;
 	padding: 20px;
-	width: 80%;
+	width: 85%;
 }
 
 #messagingContainer {
@@ -38,7 +38,7 @@
 #messaging {
 	overflow-y: scroll;
 	height: 300px;
-	width: 100%;
+	width: 88%;
 	margin-bottom: 20px;
 }
 
