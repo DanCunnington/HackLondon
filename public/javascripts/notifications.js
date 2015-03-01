@@ -1,5 +1,5 @@
 // farmerlist data array for filling in info box
-var textData = [];
+var farmerListData = [];
 
 var farmerIDToUpdate = "";
 
@@ -9,8 +9,22 @@ $(document).ready(function() {
     // Add farmer button click
     $('#listOfFarmers').on('click', 'li a.linkShowConversation', showConversation);
 
+    // Send message button click
+    $('#sendMessage').on('click', sendMessage);
+
 
     loadFarmers();
+
+    //Subscribe to faye event when text received
+	//create faye client
+	var faye_client = new Faye.Client('http://localhost:8000/faye');
+
+	faye_client.subscribe('/replyReceived', function(message) {   
+	    
+
+	    appendReply(message.twilioResponse.Body);
+	    
+	});
 
 });
 
@@ -19,6 +33,8 @@ $(document).ready(function() {
 
 function loadFarmers() {
 	$.get('/farmers/farmerlist', function(farmers) {
+
+		farmerListData = farmers;
 		
 		for (var i=0; i<farmers.length; i++) {
 			$("#listOfFarmers").append("<li><a rel="+farmers[i]._id+" href='#' class='linkShowConversation'>"+farmers[i].name+"</a></li>");
@@ -35,6 +51,9 @@ function showConversation() {
 
     // Retrieve farmername from link rel attribute
     var thisfarmerId = $(this).attr('rel');
+
+    //Update message send rel
+    $("#sendMessage").attr('rel',thisfarmerId);
 
 
     //Get messages from the server for the specified farmer
@@ -67,3 +86,59 @@ function appendQuestion(message) {
       //$('#conversationContainer').animate({ scrollBottom: $(document).height()-$(window).height() }, 500);
   //$("#conversationContainer").insertBefore( "<row><div id='reply'> Reply from farmer </div></row>" , $("#conversationContainer").firstChild);
 };
+
+
+//Send the text message
+function sendMessage() {
+
+	event.preventDefault();
+
+	//Get the message out of the input
+	var message = $("#newMessage").val();
+
+	//Clear input field
+	$("#newMessage").val("");
+
+	//Update display
+    appendQuestion(message);
+
+	//Get farmer id from rel of button
+	var farmerId = $("#sendMessage").attr('rel');
+
+	//Search through farmerListData to find the farmer clicked
+    var farmer;
+    for (var i=0; i<farmerListData.length; i++) {
+        var temp = farmerListData[i];
+     
+        if (farmerId == temp._id) {
+            farmer = temp;
+        }
+    }
+
+	//Build up JSON to post
+    var messageRequest = {"farmer_id": farmer._id, "farmer_name": farmer.name, "farmer_phoneNumber":farmer.phoneNumber, "message": message};
+
+    
+    // Use AJAX to post the object to our addfarmer service
+    $.ajax({
+        type: 'POST',
+        data: messageRequest,
+        url: '/farmers/messageFarmer',
+        dataType: 'JSON'
+    }).done(function( response ) {
+
+        // Check for successful (blank) response
+        if (response.msg === '') {
+
+            alert("Message Sent");
+
+        }
+        else {
+
+            // If something goes wrong, alert the error message that our service returned
+            alert('Error: ' + response.msg);
+
+        }
+    });
+
+}
