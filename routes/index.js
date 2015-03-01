@@ -136,4 +136,9 @@ router.get('/bloomberg', function(req, res, next) {
   res.render('bloomberg', { title: 'Hi Ruth' });
 });
 
+/* GET bloomberg page. */
+router.get('/graphs', function(req, res, next) {
+  res.render('graphs', { title: 'Hi Ruth' });
+});
+
 module.exports = router;
