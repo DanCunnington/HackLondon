@@ -31,5 +31,5 @@ window.onload = function(){
 
 
 function addFarmerPoint(){
-	canvasFarmer.addData([10], "June");
+	window.myLine.addData([10], "June");
 }
