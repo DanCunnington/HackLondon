@@ -39,10 +39,8 @@ router.get('/', function(req, res, next) {
 	  res.on('end', function() {
 	    var body = Buffer.concat(bodyChunks);
 	    console.log('BODY: ' + body);
-	    
+
 	    // ...and/or process the entire body here.
-	    
-	    res.render('index', { title: 'Hi Ruth' });
 
 	  })
 	});
