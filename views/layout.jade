@@ -20,32 +20,33 @@ html
 
   body(style="padding-bottom:10rem;")
     .container
-    nav.navbar.navbar-inverse.navbar-fixed-top( role="navigation" )
+    nav.navbar.navbar-inverse.navbar-fixed-top( role="navigation", id='navBar')
         .navbar-header
             button.navbar-toggle.collapsed( type="button", data-toggle="collapse", data-target="#navbar-inverse", aria-expanded="false", aria-controls="navbar")
                 span.sr-only Toggle navigation
                 span.icon-bar
                 span.icon-bar
                 span.icon-bar
-            a.navbar-brand(href="#") Hive
+            a.navbar-brand(href="#", id="logoTab") 
+              img(src="images/BlackLogo2.png", width="88px", height="47px")
      
         #navbar-inverse.collapse.navbar-collapse
             ul.nav.navbar-nav
-                li: a( href="/") Home
-                li: a( href="/notifications" ) Notifications
-                li: a( href="/bloomberg" ) Bloomberg
-                li: a( href="/graphs" ) Graphs
-                li.dropdown
-                    a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-expanded="false" ) Dropdown1 
-                        span.caret
-                    ul.dropdown-menu( role="menu" )
-                        li: a( href="#" ) Action
-                        li: a( href="#" ) Another action
-                        li: a( href="#" ) Something else here
-                        li.divider
-                        li.dropdown-header Nav header
-                        li: a( href="#" ) Separated link
-                        li: a( href="#" ) One more separated link
+                li: a( href="/", id='navTab') Home
+                li: a( href="/notifications", id='navTab' ) Notifications
+                li: a( href="/bloomberg", id='navTab' ) Bloomberg
+                li: a( href="/graphs", id='navTab' ) Graphs
+                //- li.dropdown
+                //-     a.dropdown-toggle( href="#", data-toggle="dropdown", role="button", aria-expanded="false" ) Dropdown1 
+                //-         span.caret
+                //-     ul.dropdown-menu( role="menu" )
+                //-         li: a( href="#" ) Action
+                //-         li: a( href="#" ) Another action
+                //-         li: a( href="#" ) Something else here
+                //-         li.divider
+                //-         li.dropdown-header Nav header
+                //-         li: a( href="#" ) Separated link
+                //-         li: a( href="#" ) One more separated link
 
 
 
