@@ -33,7 +33,8 @@ window.onload = function(){
 
 function bloombergDataInput (data){
 	for (i = 0; i < 50; i++) { 
-		bDataLength = data.data.length;
-    	lineChartData.datasets[0].data[i] = data.data[i];
+		
+    	lineChartData.datasets[0].data[i] = data[i];
 	};
+	console.log(data);
 }
