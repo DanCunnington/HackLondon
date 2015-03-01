@@ -1,41 +1,53 @@
 extends layout
 
 block content
-
-    h1 Welcome to the Bloomberg Analysis Tool
-
-    p  
-        br
-        br
-
-    div(style='float:center;')        
-        div(style='float: left; width: 20%;') 
-            a(href='')
-                img(src='/images/icon_bee.png' height='100', width='100')
-
-        div(style='float: left; width: 20%;') 
-            a(href='')
-                img(src='/images/icon_comb.png' height='100', width='100')
-
-        div(style='float: left; width: 20%;') 
-            a(href='')
-                img(src='/images/icon_honey.png' height='100', width='100')
-
-        div(style='float: left; width: 20%;') 
-            a(href='')
-                img(src='/images/icon_jar.png' height='100', width='100')
-
-        br(style='clear: left;')
-
-    p  
-        br 
-        br 
-        br  
-
-
-    div
-        canvas#canvas(height='200', width='500')
-
     script(src="/javascripts/chart.js")
     script(src="/javascripts/graphs.js")
+
+    div( id='wrapper' )
+        div( id="sidebar-wrapper")
+            ul.sidebar-nav(id="listOfFarmers")
+                li.sidebar-brand
+                    div(style='float: center;') 
+           
+        div( id='page-content-wrapper' )
+            div.container-fluid
+                div.row
+                    div.col-lg-12( id='conversationContainer' )
+
+                        h1 Bloomberg Analysis Tool
+
+                        p
+                            br
+                            br
+                            br
+
+                        div(style='float: left; width: 20%;') 
+                            a(href='')
+                                img(src='/images/icon_bee.png' height='100', width='100')
+
+                        div(style='float: left; width: 20%;') 
+                            a(href='')
+                                img(src='/images/icon_comb.png' height='100', width='100')
+
+                        div(style='float: left; width: 20%;') 
+                            a(href='')
+                                img(src='/images/icon_honey.png' height='100', width='100')
+
+                        div(style='float: left; width: 20%;') 
+                            a(href='')
+                                img(src='/images/icon_jar.png' height='100', width='100')
+                        br(style='clear: left;')
+
+                        p
+                            br
+                            br
+                            br
+
+                        p Bloomberg Data Honey, £/5kg, 2014-2015 
+
+
+                        canvas#canvas(height='150',width='500')
+
+
 

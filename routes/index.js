@@ -18,7 +18,36 @@ var client = require('twilio')('AC93f083af157194e9e51473461236bbe8','a177df398f8
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
-	
+	var outMessage = "Hello+ellie";
+
+	var options = {
+	  host: 'www.googleapis.com',
+	  path: '/language/translate/v2?key=AIzaSyBxO4Dar2Q_4zTurAGYfWOgeu4Ngewb4SE&q='+outMessage+'&source=en&target=es'
+	};
+
+	var req = http.get(options, function(res) {
+	  console.log('STATUS: ' + res.statusCode);
+	  console.log('HEADERS: ' + JSON.stringify(res.headers));
+
+	  // Buffer the body entirely for processing as a whole.
+	  var bodyChunks = [];
+	  res.on('data', function(chunk) {
+	    // You can process streamed parts here...
+	    bodyChunks.push(chunk);
+	  });
+
+	  res.on('end', function() {
+	    var body = Buffer.concat(bodyChunks);
+	    console.log('BODY: ' + body);
+
+	    // ...and/or process the entire body here.
+
+	  })
+	});
+
+	req.on('error', function(e) {
+	  console.log('ERROR: ' + e.message);
+	});
 
 	res.render('index', { title: 'Hi Ellie' });
 });
@@ -214,7 +243,6 @@ router.get('/bloomberg', function(req, res, next) {
   res.render('bloomberg', { title: 'Hi Ruth' });
 });
 
-/* GET bloomberg page. */
 router.get('/graphs', function(req, res, next) {
   res.render('graphs', { title: 'Hi Ruth' });
 });
