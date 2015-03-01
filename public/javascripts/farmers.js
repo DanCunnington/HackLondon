@@ -97,8 +97,33 @@ function addfarmer(event) {
         var newfarmer = {
             'name': $('#addFarmer fieldset input#inputFarmerName').val(),
             'phoneNumber': $('#addFarmer fieldset input#inputFarmerPhone').val()
+            'image': $('#addFarmer fieldset input#inputFarmerPhoto').val()
         }
-        
+        // var fileName = $('#fileupload').val().replace(/.*(\/|\\)/, '');
+
+        //         if (fileName != "") {
+        //                         $.ajaxFileUpload({ url: 'AjaxFileUploader.ashx',
+        //                             secureuri: false,
+        //                             fileElementId: 'fileupload',
+        //                             dataType: 'json',
+        //                             success: function (data, status) {
+        //                                 if (typeof (data.error) != 'undefined') {
+        //                                     if (data.error != '') {
+        //                                         alert(data.error);
+        //                                     } else {
+        //                                         alert('Success')
+        //                                     }
+        //                                 }
+        //                             },
+        //                             error: function (data, status, e) {
+        //                                 alert(e);
+        //                             }
+        //                         }
+        //                         )
+        //                     }
+        //         }
+
+
         // Use AJAX to post the object to our addfarmer service
         $.ajax({
             type: 'POST',

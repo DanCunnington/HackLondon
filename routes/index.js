@@ -94,7 +94,7 @@ router.get('/bloombergData', function(req, response, next) {
 	});
 
 	req.write(JSON.stringify( {
-	    "securities": ["IBM US Equity"],
+	    "securities": ["ismwhoneyindex"],
 	    "fields": ["PX_LAST"],
 	    "startDate": "20100101",
 	    "endDate": "20150101",
@@ -157,6 +157,11 @@ router.get('/notifications', function(req, res, next) {
 /* GET bloomberg page. */
 router.get('/bloomberg', function(req, res, next) {
   res.render('bloomberg', { title: 'Hi Ruth' });
+});
+
+/* GET bloomberg page. */
+router.get('/graphs', function(req, res, next) {
+  res.render('graphs', { title: 'Hi Ruth' });
 });
 
 module.exports = router;

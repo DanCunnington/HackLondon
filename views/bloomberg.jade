@@ -2,10 +2,39 @@ extends layout
 
 block content
 
-    div(style='width:30%')
-    div
-        canvas#canvas(height='450', width='600')
+    h1 Welcome to the Bloomberg Analysis Tool
 
+    p  
+        br
+        br
+
+    div(style='float:center;')        
+        div(style='float: left; width: 20%;') 
+            a(href='')
+                img(src='/images/icon_bee.png' height='100', width='100')
+
+        div(style='float: left; width: 20%;') 
+            a(href='')
+                img(src='/images/icon_comb.png' height='100', width='100')
+
+        div(style='float: left; width: 20%;') 
+            a(href='')
+                img(src='/images/icon_honey.png' height='100', width='100')
+
+        div(style='float: left; width: 20%;') 
+            a(href='')
+                img(src='/images/icon_jar.png' height='100', width='100')
+
+        br(style='clear: left;')
+
+    p  
+        br 
+        br 
+        br  
+
+
+    div
+        canvas#canvas(height='200', width='500')
 
     script(src="/javascripts/chart.js")
     script(src="/javascripts/graphs.js")
