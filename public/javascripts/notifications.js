@@ -37,7 +37,7 @@ function loadFarmers() {
 		farmerListData = farmers;
 		
 		for (var i=0; i<farmers.length; i++) {
-			$("#listOfFarmers").append("<li><a rel="+farmers[i]._id+" href='#' class='linkShowConversation'>"+farmers[i].name+"</a></li>");
+			$("#listOfFarmers").append("<li><a rel="+farmers[i]._id+" href='#' class='linkShowConversation'><img src='/images/"+farmers[i].nameOfImage+"', width='50px', height='50px'></img>    "+farmers[i].name+"</a></li>");
 		}
 		
 	});
