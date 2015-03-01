@@ -37,8 +37,11 @@ router.get('/', function(req, res, next) {
 	  }).on('end', function() {
 	    var body = Buffer.concat(bodyChunks);
 	    console.log('BODY: ' + body);
+
 	    // ...and/or process the entire body here.
 	    
+	    res.render('index', { title: 'Hi Ruth' });
+
 	  })
 	});
 
@@ -159,7 +162,6 @@ router.get('/bloomberg', function(req, res, next) {
   res.render('bloomberg', { title: 'Hi Ruth' });
 });
 
-/* GET bloomberg page. */
 router.get('/graphs', function(req, res, next) {
   res.render('graphs', { title: 'Hi Ruth' });
 });
