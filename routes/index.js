@@ -110,19 +110,42 @@ router.get('/bloombergData', function(req, response, next) {
 
 // POST route for the text message reply
 router.post('/textMessageReply', function(req,res) {
+	var db = req.db;
 	var replyObject = req.body;
 
-    //Save reply to database
-    var db = req.db;
-    db.collection('replies').insert(replyObject, function(error, result) {
-    	//Send to client
-    	fayeClient.publish('/replyReceived', {
+	console.log(replyObject);
 
-    		twilioResponse: replyObject
-    	});
+	//Get phone number and lookup in the farmers table which farmer has sent the reply
+	//then store the farmer id.
+	var replyPhoneNumber = replyObject.From;
 
-    	res.send(200);
-    })
+	db.collection('farmers').find({phoneNumber: replyPhoneNumber}).toArray(function (err, items) {
+       
+
+		//Should only be one item
+		var farmerId = items[0]._id;
+
+
+		//Update reply object
+		replyObject.farmer_id = farmerId;
+
+		console.log(replyObject);
+
+       	//Save reply to database
+	    db.collection('replies').insert(replyObject, function(error, result) {
+	    	//Send to client
+	    	fayeClient.publish('/replyReceived', {
+
+	    		twilioResponse: replyObject
+	    	});
+
+	    	res.send(200);
+	    })
+
+    });
+
+
+    
 });
 
 /* GET notificatons page. */
