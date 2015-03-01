@@ -87,11 +87,6 @@ $(document).ready(function() {
 	    
 	});
 
-
-	populateData();
-})
-
-window.onload = function(){
 	var ctx = document.getElementById("canvasProfit").getContext("2d");
 	window.myProfitsLine = new Chart(ctx).Line(lineChartProfitData, {
 		responsive: true
@@ -111,7 +106,14 @@ window.onload = function(){
 	window.myHoursLine = new Chart(ctx).Line(lineChartHoursData, {
 		responsive: true
 	});
-}
+
+
+	populateData();
+})
+
+
+	
+
 
 
 function updateData(message) {
