@@ -122,7 +122,6 @@ router.post('/textMessageReply', function(request,response) {
 	//Convert spanish reply to english
 	var msgToTranslate = spanishReply.replace(/ /g, "+");
 
-	console.log("*****MSG: "+msgToTranslate);
 
 	var options = {
 		host: 'www.googleapis.com',
@@ -145,9 +144,7 @@ router.post('/textMessageReply', function(request,response) {
 		    body = body +"";
 		    body = JSON.parse(body);
 		    var english = body.data.translations[0].translatedText;
-		    
-			console.log("ENGLISH translation:: "+english);
-		    
+
 		    //update the replyobject
 			replyObject.Body = english;
 			console.log(english);
@@ -167,6 +164,60 @@ router.post('/textMessageReply', function(request,response) {
 				//Update reply object
 				replyObject.farmer_id = farmerId;
 
+				//If the reply contains information about the profit, update the accounts table
+				var profitMatch = english.match(/profit/i);
+				var noJarsMatch = english.match(/jars/i);
+				var costsMatch = english.match(/costs/i);
+				var hoursMatch = english.match(/hours/i);
+
+				if (profitMatch) {
+					//Extract value past the semi colon
+					var profit = english.split(":")[1];
+
+					//Now we have the profit, save to profits table
+					var profitsObjectToInsert = {"farmer_id":farmerId, "profit":profit, "timestamp":Date.now()};
+
+					db.collection('profits').insert(profitsObjectToInsert, function(error,result) {
+
+					});
+				}
+
+				if (noJarsMatch) {
+					//Extract value past the semi colon
+					var jars = english.split(":")[1];
+
+					//Now we have the no jars, save to jars table
+					var jarsObjectToInsert = {"farmer_id":farmerId, "noHoneyJarsSold":jars, "timestamp":Date.now()};
+
+					db.collection('jars').insert(jarsObjectToInsert, function(error,result) {
+
+					});
+				}
+
+				if (costsMatch) {
+					//Extract value past the semi colon
+					var costs = english.split(":")[1];
+
+					//Now we have the costs, save to costs table
+					var costsObjectToInsert = {"farmer_id":farmerId, "costs":costs, "timestamp":Date.now()};
+
+					db.collection('costs').insert(costsObjectToInsert, function(error,result) {
+
+					});
+				}
+
+				if (hoursMatch) {
+					//Extract value past the semi colon
+					var hours = english.split(":")[1];
+
+					//Now we have the hours, save to hours table
+					var hoursObjectToInsert = {"farmer_id":farmerId, "hours":hours, "timestamp":Date.now()};
+
+					db.collection('hours').insert(hoursObjectToInsert, function(error,result) {
+
+					});
+				}
+
 				
 		       	//Save reply to database
 			    db.collection('replies').insert(replyObject, function(error, result) {
@@ -175,6 +226,8 @@ router.post('/textMessageReply', function(request,response) {
 
 			    		twilioResponse: replyObject
 			    	});
+
+			    	
 
 			    	response.send(200);
 			    })
@@ -194,7 +247,7 @@ router.get('/translateEngToSpa/:message', function(request,response) {
 
 	var msgToTranslate = request.params.message;
 
-	var msgToTranslate = msgToTranslate.replace(" ", "+");
+	var msgToTranslate = msgToTranslate.replace(/ /g, "+");
 
 	var options = {
 		host: 'www.googleapis.com',
@@ -229,6 +282,38 @@ router.get('/translateEngToSpa/:message', function(request,response) {
 	  console.log('ERROR: ' + e.message);
 	});
 
+});
+
+/* GET profits */
+router.get('/profits', function(req,res,next) {
+	var db = req.db;
+    db.collection('profits').find().toArray(function (err, items) {
+        res.json(items);
+    });
+});
+
+/* GET jars */
+router.get('/jars', function(req,res,next) {
+	var db = req.db;
+    db.collection('jars').find().toArray(function (err, items) {
+        res.json(items);
+    });
+});
+
+/* GET costs */
+router.get('/costs', function(req,res,next) {
+	var db = req.db;
+    db.collection('costs').find().toArray(function (err, items) {
+        res.json(items);
+    });
+});
+
+/* GET hours */
+router.get('/hours', function(req,res,next) {
+	var db = req.db;
+    db.collection('hours').find().toArray(function (err, items) {
+        res.json(items);
+    });
 });
 
 
