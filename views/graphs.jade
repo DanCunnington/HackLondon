@@ -7,15 +7,30 @@ block content
   script(src="/javascripts/chart.js")
 
   div( id='wrapper' )
-    div( id="sidebar-wrapper")
+    div( id="sidebar-wrapper" style='background-image: url(/images/comb2.png);')
       ul.sidebar-nav(id="listOfFarmers")
-          li.sidebar-brand
-            a( id='recent-notifications', href='#' ) Recent Notifications     
+          li.sidebar-brand Farmers     
 
     div( id='page-content-wrapper' )
         div.container-fluid
             div.row
-                div.col-lg-12( id='conversationContainer' )
-
-                  canvas#canvasFarmer(height='200',width='500', onclick='addFarmerPoint()')
+                
+                h2 Profit - Farmer Dan Cunnington
+                br
+                canvas#canvasProfit(height='200',width='500')
+                br
+                br
+                h2 Number of Honey Jars Sold
+                br
+                canvas#canvasJars(height='200',width='500')
+                br
+                br
+                h2 Costs
+                br
+                canvas#canvasCosts(height='200',width='500')
+                br
+                br
+                h2 Number of Hours Worked
+                br
+                canvas#canvasHours(height='200',width='500')
 

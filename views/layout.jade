@@ -8,6 +8,7 @@ html
     meta( name='description', content='Baking Bootstrap Snippets with Jade' )
     <!-- Latest compiled and minified CSS -->
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css')
+    link(href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css')
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/stylesheets/notifications.css')
 
@@ -28,12 +29,12 @@ html
                 span.icon-bar
                 span.icon-bar
             a.navbar-brand(href="#", id="logoTab") 
-              img(src="/images/BlackLogo2.png", width="88px", height="47px")
+              img(src="/images/BlackLogo2.png", id="navLogo")
      
         #navbar-inverse.collapse.navbar-collapse
             ul.nav.navbar-nav
                 li: a( href="/", id='navTab') Home
-                li: a( href="/notifications", id='navTab' ) Notifications
+                li: a( href="/notifications", id='navTab' ) Messaging
                 li: a( href="/bloomberg", id='navTab' ) Bloomberg
                 li: a( href="/graphs", id='navTab' ) Graphs
                 //- li.dropdown

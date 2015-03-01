@@ -1,22 +1,20 @@
 extends layout
 
 block content
-
-  div( id='wrapper' )
-    div( id="sidebar-wrapper")
+  div( id='wrapper')
+    div( id="sidebar-wrapper" style='background-image: url(/images/comb2.png);')
       ul.sidebar-nav(id="listOfFarmers")
-          li.sidebar-brand
-            a( id='recent-notifications', href='#' ) Recent Notifications
+          li.sidebar-brand Farmers
            
     div( id='page-content-wrapper' )
-        div.container-fluid
-            div.row
-                div.col-lg-12( id='conversationContainer' )
-                    p( id='headerP' ) Most recent message at the top
- 
-            div.row
-                input#newMessage(type='text', placeholder='New Message')
-                button#sendMessage(rel='') Send        
+        div(id='messagingContainer')
+            h1(id="conversationHead") Messaging
+
+            div(id="messaging")
+                 
+            
+            input#newMessage(type='text', placeholder='New Message')
+            button#sendMessage(rel='') Send        
   //- div( id='wrapper' )
   //-   div( id='sidebar-wrapper' )
   //-       ul.sidebar-nav
