@@ -19,7 +19,7 @@ $(document).ready(function() {
     $('#farmerList table tbody').on('click', 'td a.linkupdatefarmer', updatefarmerRetrieve);
 
     // Update farmer update button
-     $('#btnUpdateFarmer').on('click', updatefarmerSubmit);
+    $('#btnUpdateFarmer').on('click', updatefarmerSubmit);
 
     // Message farmer link button
     $('#farmerList table tbody').on('click', 'td a.linkmessagefarmer', messageFarmer);

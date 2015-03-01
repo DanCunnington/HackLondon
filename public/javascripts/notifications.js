@@ -7,7 +7,7 @@ var farmerIDToUpdate = "";
 $(document).ready(function() {
 
     // Add farmer button click
-    $('#farmer1').on('click', loadFarmer1);
+    $('#listOfFarmers').on('click', 'li a.linkShowConversation', showConversation);
 
 
     loadFarmers();
@@ -21,29 +21,49 @@ function loadFarmers() {
 	$.get('/farmers/farmerlist', function(farmers) {
 		
 		for (var i=0; i<farmers.length; i++) {
-			$("#listOfFarmers").append("<li><a id="+farmers[i]._id+" href='#'>"+farmers[i].name+"</a></li>");
+			$("#listOfFarmers").append("<li><a rel="+farmers[i]._id+" href='#' class='linkShowConversation'>"+farmers[i].name+"</a></li>");
 		}
 		
 	});
 }
 
-// Fill table with data
-function loadFarmer1() {
-  
+//Displays a conversation for the farmer clicked
+function showConversation() {
 
-  document.getElementById('conversationContainer').innerHTML = 'New Header';
+	// Prevent Link from Firing
+    event.preventDefault();
 
-};
+    // Retrieve farmername from link rel attribute
+    var thisfarmerId = $(this).attr('rel');
+
+
+    //Get messages from the server for the specified farmer
+    $.get('/farmers/messagesToFarmer/'+thisfarmerId, function(messages) {
+
+    	for (var i=0; i<messages.length; i++) {
+    		appendQuestion(messages[i].message_body);
+    	}
+    });
+
+    //Get replies from the server for the specified farmer
+    $.get('/farmers/repliesToFarmer/'+thisfarmerId, function(replies) {
+    	
+    	for (var i=0; i<replies.length; i++) {
+    		appendReply(replies[i].Body);
+    	}
+    });
+
+}
 
 //create reply function that appends a div to the conversation window given a message
 function appendReply(message) {
-  $("#conversationContainer").prepend("<row><div id='reply'> Reply from farmer </div></row>");
+  $("#conversationContainer").prepend("<row><div id='reply'>"+message+"</div></row>");
   //$("#conversationContainer").insertBefore( "<row><div id='reply'> Reply from farmer </div></row>" , $("#conversationContainer").firstChild);
 };
 
 //create reply function that appends a div to the conversation window given a message
 function appendQuestion(message) {
-  $("#conversationContainer").prepend("<row><div id='question'> Question to farmer </div></row>");
+  $("#conversationContainer").prepend("<row><div id='question'>"+message+"</div></row>");
       //$('#conversationContainer').animate({ scrollBottom: $(document).height()-$(window).height() }, 500);
   //$("#conversationContainer").insertBefore( "<row><div id='reply'> Reply from farmer </div></row>" , $("#conversationContainer").firstChild);
 };
