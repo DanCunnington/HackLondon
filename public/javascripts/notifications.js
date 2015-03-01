@@ -9,9 +9,23 @@ $(document).ready(function() {
     // Add farmer button click
     $('#farmer1').on('click', loadFarmer1);
 
+
+    loadFarmers();
+
 });
 
 // Functions =============================================================
+
+
+function loadFarmers() {
+	$.get('/farmers/farmerlist', function(farmers) {
+		
+		for (var i=0; i<farmers.length; i++) {
+			$("#listOfFarmers").append("<li><a id="+farmers[i]._id+" href='#'>"+farmers[i].name+"</a></li>");
+		}
+		
+	});
+}
 
 // Fill table with data
 function loadFarmer1() {

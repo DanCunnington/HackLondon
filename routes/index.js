@@ -127,6 +127,7 @@ router.post('/textMessageReply', function(req,res) {
 
 /* GET notificatons page. */
 router.get('/notifications', function(req, res, next) {
+
   res.render('notifications', { title: 'Hi Ruth' });
 });
 
