@@ -94,7 +94,7 @@ router.get('/bloombergData', function(req, response, next) {
 	});
 
 	req.write(JSON.stringify( {
-	    "securities": ["IBM US Equity"],
+	    "securities": ["ismwhoneyindex"],
 	    "fields": ["PX_LAST"],
 	    "startDate": "20100101",
 	    "endDate": "20150101",
