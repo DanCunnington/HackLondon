@@ -34,9 +34,12 @@ router.get('/', function(req, res, next) {
 	  res.on('data', function(chunk) {
 	    // You can process streamed parts here...
 	    bodyChunks.push(chunk);
-	  }).on('end', function() {
+	  });
+
+	  res.on('end', function() {
 	    var body = Buffer.concat(bodyChunks);
 	    console.log('BODY: ' + body);
+	    
 	    // ...and/or process the entire body here.
 	    
 	  })
@@ -46,7 +49,7 @@ router.get('/', function(req, res, next) {
 	  console.log('ERROR: ' + e.message);
 	});
 
-
+	res.render('index', { title: 'Hi Ellie' });
 });
 
 /* ------------------------------------------------------------------------- */
