@@ -1,12 +1,20 @@
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 a {
   color: #00B7FF;
 }
 
+#mainLogo {
+	width: 300px;
+	margin: 0 auto;
+	clear: both;
+	margin-top: 60px;
+	display: block;
+
+}
 
 #wrapper {
 	padding-left:312px;
@@ -63,4 +71,24 @@ a {
 fieldset {
 	border:0;
 	padding:0; margin:0;
+}
+
+h1.mainTitle {
+
+	margin-top: 40px;
+	text-align: center;
+}
+
+#strapline {
+	text-align: center;
+	margin-top: 20px;
+	font-style: italic;
+	font-size: 120%;
+}
+
+#navLogo {
+	width: 70px;
+	position: relative;
+	top: 4px;
+	left: 10px;
 }
