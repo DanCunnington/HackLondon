@@ -96,33 +96,9 @@ function addfarmer(event) {
         // If it is, compile all farmer info into one object
         var newfarmer = {
             'name': $('#addFarmer fieldset input#inputFarmerName').val(),
-            'phoneNumber': $('#addFarmer fieldset input#inputFarmerPhone').val()
-            'image': $('#addFarmer fieldset input#inputFarmerPhoto').val()
+            'phoneNumber': $('#addFarmer fieldset input#inputFarmerPhone').val(),
+            'nameOfImage': $('#addFarmer fieldset input#inputFarmerPhoto').val()
         }
-        // var fileName = $('#fileupload').val().replace(/.*(\/|\\)/, '');
-
-        //         if (fileName != "") {
-        //                         $.ajaxFileUpload({ url: 'AjaxFileUploader.ashx',
-        //                             secureuri: false,
-        //                             fileElementId: 'fileupload',
-        //                             dataType: 'json',
-        //                             success: function (data, status) {
-        //                                 if (typeof (data.error) != 'undefined') {
-        //                                     if (data.error != '') {
-        //                                         alert(data.error);
-        //                                     } else {
-        //                                         alert('Success')
-        //                                     }
-        //                                 }
-        //                             },
-        //                             error: function (data, status, e) {
-        //                                 alert(e);
-        //                             }
-        //                         }
-        //                         )
-        //                     }
-        //         }
-
 
         // Use AJAX to post the object to our addfarmer service
         $.ajax({
@@ -156,6 +132,66 @@ function addfarmer(event) {
         return false;
     }
 };
+
+// // Store Image
+// function storeImage(event) {
+//     event.preventDefault();
+
+//       // access database
+//   $db = $conn->test;
+
+//   // get GridFS files collection
+//   $gridfs = $db->getGridFS();
+  
+//   // store file in collection
+//   $id = $gridfs->storeFile('/tmp/img_2312.jpg');
+//   echo 'Saved file with ID: ' . $id;
+
+    // var newFileName = "mkyong-java-image";
+    // File imageFile = new File("/public/images/icon_bee.png");
+    // GridFS gfsPhoto = new GridFS(db, "photo");
+    // GridFSInputFile gfsFile = gfsPhoto.createFile(imageFile);
+    // gfsFile.setFilename(newFileName);
+    // gfsFile.save();
+
+    // var filePath = '/images/BlackLogo2.PNG'
+
+    // if (filePath != "") {
+    //   $.ajaxFileUpload({ url: '/farmers/addfarmerimage',
+    //     secureuri: false,
+    //     fileElementId: 'fileupload',
+    //     dataType: 'JSON',
+    //     success: function (data, status) {
+    //         if (typeof (data.error) != 'undefined') {
+    //             if (data.error != '') {
+    //                 alert(data.error);
+    //             } else {
+    //                 alert('Success')
+    //             }
+    //         }
+    //     },
+    //     error: function (data, status, e) {
+    //         alert(e);
+    //     }
+    //   }
+    //   )
+    // }
+
+    // 'image': $('#addFarmer fieldset input#inputFarmerPhoto').val()
+//}
+
+function hexToBase64(str) {
+    return btoa(String.fromCharCode.apply(null, str.replace(/\r|\n/g, "").replace(/([\da-fA-F]{2}) ?/g, "0x$1 ").replace(/ +$/, "").split(" ")));
+}
+
+// // Show image
+// function retrieveImage(str) {
+//     event.preventDefault();
+
+//     var img = new Image();
+//     img.src = "data:/image/jpeg;base64,"+hexToBase64(getBinary());
+//     document.body.appendChild(img);
+// }
 
 // Delete farmer
 function deletefarmer(event) {
@@ -236,7 +272,8 @@ function updatefarmerSubmit(event) {
         // If it is, compile all farmer info into one object
         var updatedfarmer = {
             'name': $('#updateFarmer fieldset input#updateFarmerName').val(),
-            'phoneNumber': $('#updateFarmer fieldset input#updateFarmerPhone').val()
+            'phoneNumber': $('#updateFarmer fieldset input#updateFarmerPhone').val(),
+            'nameOfImage': $('#updateFarmer fieldset input#inputFarmerPhoto').val()
     
         }
 

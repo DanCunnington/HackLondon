@@ -1,6 +1,7 @@
 extends layout
 
 block content
+    script(src='/javascripts/ajaxfileupload.js')
     script(src='/javascripts/farmers.js')
     #wrapper
         //Farmer INFO
@@ -30,7 +31,7 @@ block content
             fieldset
                 input#inputFarmerName(type='text', placeholder='Name')
                 input#inputFarmerPhone(type='text', placeholder='Phone Number')
-                input#inputFarmerPhoto(type='file', placeholder='Choose photo')
+                input#inputFarmerPhoto(type='text', placeholder='Name of image')
                 br
                 button#btnAddFarmer Add Farmer
         // /ADD Farmer
@@ -42,7 +43,7 @@ block content
             fieldset
                 input#updateFarmerName(type='text', placeholder='Name')
                 input#updateFarmerPhone(type='text', placeholder='Phone Number')
-                input#updateFarmerPhoto(type='file', placeholder='Choose photo')
+                input#updateFarmerPhoto(type='text', placeholder='Name of image')
                 br
                 button#btnUpdateFarmer Update Farmer
         // /UPDATE Farmer
